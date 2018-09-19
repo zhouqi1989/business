@@ -22,6 +22,7 @@ public class TestController{
 	@RequestMapping("aa.zhouqi")
 	public String test() {
 		System.out.println("22222222fdsafds");
+		
 		return "aaaaa";
 	}
 	
