@@ -15,7 +15,7 @@ public class SecurityFilter extends ZuulFilter  {
 		RequestContext ct = RequestContext.getCurrentContext();
 		ct.setSendZuulResponse(false);
 		ct.setResponseStatusCode(404);
-		ct.setResponseBody(ct.getRequest().getServletPath());
+		//ct.setResponseBody(ct.getRequest().getServletPath());
 		return null;
 	}
 
