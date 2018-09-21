@@ -5,6 +5,9 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Component;
 import org.zuul.pojo.Account;
 import org.zuul.repository.AccountRepository;
@@ -17,8 +20,8 @@ public class AppInit implements ApplicationRunner {
 	
 	@Autowired
 	private AccountRepository accountRepository;
-	//@Autowired
-	//private ElasticsearchTemplate elasticsearchTemplate;
+	@Autowired
+	private ElasticsearchTemplate elasticsearchTemplate;
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
@@ -39,12 +42,13 @@ public class AppInit implements ApplicationRunner {
 		
 		Account r = accountRepository.save(account);
 		System.out.println("ID是:"+r.getId());
-		/*String name="你好啊";
+		String name="你好啊";
 		IndexQuery indexQuery = new IndexQueryBuilder().withIndexName("index_zq")
                 .withType("type_qq").withId("isId").withObject(name).build();
 		
 		String s = elasticsearchTemplate.index(indexQuery);
-		System.out.println(s);*/
+		System.out.println(s);
+		
 	}
 
 }
