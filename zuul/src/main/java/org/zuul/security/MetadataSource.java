@@ -6,8 +6,10 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.stereotype.Component;
 import org.zuul.repository.RoleRepository;
 
+@Component
 public class MetadataSource implements FilterInvocationSecurityMetadataSource {
 
 	@Autowired

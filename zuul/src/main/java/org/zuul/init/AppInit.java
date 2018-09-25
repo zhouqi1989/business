@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.zuul.entity.Account;
 import org.zuul.repository.AccountRepository;
@@ -20,19 +22,21 @@ public class AppInit implements ApplicationRunner {
 	//@Autowired
 	//private ElasticsearchTemplate elasticsearchTemplate;
 	
+	private PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		System.out.println("启动后执行:"+name);
 		
 		Account account=new Account();
-		account.setAccount("test");
+		account.setAccount("13423731804");
 		account.setEmail("1216309226@qq.com");
 		account.setIcon("icon");
 		account.setCreateTime(new Date());
 		account.setLastLoginTime(new Date());
 		account.setLastUpdateTime(new Date());
 		account.setName("zhou qi");
-		account.setPassword("******");
+		account.setPassword(passwordEncoder.encode("123456"));
 		account.setPhone("13423731804");
 		account.setStatus(0);
 		account.setType(0);

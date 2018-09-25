@@ -1,41 +1,50 @@
 package org.zuul.security;
 
+import java.io.Serializable;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.zuul.entity.Account;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-@Component
-public class AuthenProvider implements AuthenticationProvider {
+@Service
+public class AuthenProvider implements AuthenticationProvider,Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 456987L;
+	
 	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private UserDetails userDetails;
 	
 	@Override
 	public Authentication authenticate(Authentication authen) throws AuthenticationException {
-		String passwrod=(String)authen.getPrincipal();
+		String name=(String)authen.getPrincipal();
 		
-		Account user = (Account)authen.getDetails();
+		String passwrod = (String)authen.getCredentials();
 		
-		String encoderPassword=bCryptPasswordEncoder.encode(passwrod);
-		if(user.getPassword().equals(encoderPassword)){
-			
-		}else{
+		if(StringUtils.isBlank(name)||StringUtils.isBlank(passwrod))return null;
+		
+		org.springframework.security.core.userdetails.UserDetails user=userDetails.loadUserByUsername(name);
+		
+		if(!passwordEncoder.matches(passwrod,user.getPassword())){
 			throw new BadCredentialsException("密码不正确");
 		}
 		
-		return new UsernamePasswordAuthenticationToken(authen.getPrincipal(), 
-				user, user.getAuthorities());
+		return new UsernamePasswordAuthenticationToken(name,passwrod);
 	}
 
 	@Override
 	public boolean supports(Class<?> arg0) {
 		return true;
 	}
-
 }
